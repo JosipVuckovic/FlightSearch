@@ -1,11 +1,9 @@
-using FlightSearch.Server.Models.Config;
-using FlightSearch.Server.Models.StringConstants;
+using FlightSearch.External;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.Configure<AmadeusApiSettings>(
-    builder.Configuration.GetSection(StringConstants.AmadeusApiSettings)); 
+builder.Services.AddFlightSearchExternal(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

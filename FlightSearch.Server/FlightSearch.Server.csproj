@@ -20,6 +20,11 @@
     <ProjectReference Include="..\flightsearch.client\flightsearch.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\FlightSearch.External\FlightSearch.External.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Config\" />
   </ItemGroup>
 
 </Project>
