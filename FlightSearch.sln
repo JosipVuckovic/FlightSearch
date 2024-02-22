@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightSearch.Server", "FlightSearch.Server\FlightSearch.Server.csproj", "{946FFE3C-A701-46C0-9933-978353966CBB}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "flightsearch.client", "flightsearch.client\flightsearch.client.esproj", "{5BB6ADC7-7608-4715-BEEF-50D74F10B19C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{946FFE3C-A701-46C0-9933-978353966CBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{946FFE3C-A701-46C0-9933-978353966CBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{946FFE3C-A701-46C0-9933-978353966CBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{946FFE3C-A701-46C0-9933-978353966CBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BB6ADC7-7608-4715-BEEF-50D74F10B19C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BB6ADC7-7608-4715-BEEF-50D74F10B19C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BB6ADC7-7608-4715-BEEF-50D74F10B19C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5BB6ADC7-7608-4715-BEEF-50D74F10B19C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BB6ADC7-7608-4715-BEEF-50D74F10B19C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BB6ADC7-7608-4715-BEEF-50D74F10B19C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3FB49A69-74F6-4A42-B1A3-E38362032802}
+	EndGlobalSection
+EndGlobal
