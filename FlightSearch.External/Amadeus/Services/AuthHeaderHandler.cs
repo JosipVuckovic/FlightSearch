@@ -1,7 +1,6 @@
 ﻿using FlightSearch.External.Amadeus.DTO;
 using FlightSearch.Server.Models.Config;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
 namespace FlightSearch.External.Amadeus.Services;
@@ -30,13 +29,13 @@ public class AuthHeaderHandler : DelegatingHandler
              try
              {
                  //TODO: JV move to string constants
-                 var response = await _amadeusApi.GetAccessToken(new Dictionary<string, string>
+                 _oAuthResponse = await _amadeusApi.GetAccessTokenAsync(new Dictionary<string, string>
                  {
                      { "grant_type", _settings.GrantType },
                      { "client_id", _settings.ApiKey },
                      { "client_secret", _settings.ApiSecret }
                  });
-                 _oAuthResponse = JsonConvert.DeserializeObject<OAuthResponse>(response);
+                 
                  _expiresAt = DateTimeOffset.Now.AddSeconds(_oAuthResponse.ExpiresIn);
              }
              catch (Exception e)
@@ -46,7 +45,7 @@ public class AuthHeaderHandler : DelegatingHandler
          }
 
         if (authHeader != null)
-            headers.Authorization = new AuthenticationHeaderValue(authHeader.Scheme, $"Bearer {_oAuthResponse.AccessToken}");
+            headers.Authorization = new AuthenticationHeaderValue(authHeader.Scheme, _oAuthResponse.AccessToken);
         
         return await base.SendAsync(request, cancelToken);
     }

@@ -3,6 +3,7 @@ using FlightSearch.Server.Models.Config;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
+using System.Reflection;
 
 namespace FlightSearch.External;
 
@@ -12,16 +13,37 @@ public static class FlightSearchServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.Configure<AmadeusApiSettings>(configuration.GetSection(StringConstants.StringConstants.AmadeusApiSettings));
-        services.AddSingleton<AuthHeaderHandler>();
+        services.Configure<AmadeusApiSettings>(configuration.GetSection(StringConstants.AmadeusApiSettings));
+        services.AddTransient<AuthHeaderHandler>();
+
+        services.AddRefitClient<IAmadeusTokenApi>()
+            .ConfigureHttpClient(c => c.BaseAddress = new Uri(
+                configuration.GetValue<string>(StringConstants.AmadeusApiSettingsBaseUrl)));
+
         
-        services.AddRefitClient<IAmadeusTokenApi>() //TODO: JV replace base address with settings call 
-            .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://test.api.amadeus.com"));
+        var refitSettings = new RefitSettings
+        {
+            UrlParameterFormatter = new BooleanUrlParameterFormatter()
+        };
         
-        services.AddRefitClient<IAmadeusApi>() //TODO: JV replace base address with settings call
-            .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://test.api.amadeus.com"))
+        services.AddRefitClient<IAmadeusApi>(refitSettings)
+            .ConfigureHttpClient(c =>
+                c.BaseAddress = new Uri(configuration.GetValue<string>(StringConstants.AmadeusApiSettingsBaseUrl)))
             .AddHttpMessageHandler<AuthHeaderHandler>();
 
         return services;
+    }
+}
+
+public sealed class BooleanUrlParameterFormatter : DefaultUrlParameterFormatter
+{
+    public override string? Format(object? parameterValue, ICustomAttributeProvider attributeProvider, Type type)
+    {
+        if (parameterValue is bool)
+        {
+            return parameterValue.ToString()!.ToLower();
+        }
+
+        return base.Format(parameterValue, attributeProvider, type);
     }
 }
