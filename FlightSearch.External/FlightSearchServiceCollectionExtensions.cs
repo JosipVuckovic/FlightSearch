@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using System.Reflection;
+using System.Text.Json;
 
 namespace FlightSearch.External;
 
@@ -23,7 +24,7 @@ public static class FlightSearchServiceCollectionExtensions
         
         var refitSettings = new RefitSettings
         {
-            UrlParameterFormatter = new BooleanUrlParameterFormatter()
+            UrlParameterFormatter = new BooleanUrlParameterFormatter(),
         };
         
         services.AddRefitClient<IAmadeusApi>(refitSettings)

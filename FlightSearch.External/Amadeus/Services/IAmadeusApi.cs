@@ -5,9 +5,7 @@ namespace FlightSearch.External.Amadeus.Services;
 
 public interface IAmadeusApi
 {
-    //TODO JV: Do a proper model 
-    
     [Headers("Authorization: Bearer")]
     [Get("/v2/shopping/flight-offers")]
-    Task<string> GetFlightOffersAsync([Query] FlightSearchRequest request);
+    Task<FlightSearchResponse> GetFlightOffersAsync([Query] FlightSearchRequest request, CancellationToken cancellationToken);
 }
