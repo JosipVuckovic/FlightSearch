@@ -1,5 +1,7 @@
-﻿using FlightSearch.External.Amadeus.Services;
+﻿using FlightSearch.External.Amadeus.DTO;
+using FlightSearch.Server.Service;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace FlightSearch.Server.Controllers;
 
@@ -8,20 +10,20 @@ namespace FlightSearch.Server.Controllers;
 public class FlightSearchController : ControllerBase
 {
     private readonly ILogger<FlightSearchController> _logger;
-    private readonly IAmadeusApi _amadeusApi;
+    private readonly IFlightSearchService _flightSearchService;
 
-    public FlightSearchController(ILogger<FlightSearchController> logger, IAmadeusApi amadeusApi)
+
+    public FlightSearchController(ILogger<FlightSearchController> logger, 
+                                  IFlightSearchService flightSearchService)
     {
         _logger = logger;
-        _amadeusApi = amadeusApi;
+        _flightSearchService = flightSearchService;
     }
 
     [HttpGet(Name = "GetFlightSearch")]
-    public IActionResult Get()
+    public async Task<IActionResult> Get(FlightSearchRequest request, CancellationToken cancellationToken)
     {
-        var test = _amadeusApi.GetFlightOffers(new object()).GetAwaiter().GetResult();
-        
-        throw new NotImplementedException();
+        var result = await _flightSearchService.GetFlightSearchDataAsync(request, cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : Ok(result.Error);
     }
 }
-
