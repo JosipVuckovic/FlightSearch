@@ -1720,6 +1720,21 @@ namespace FlightSearch.External.Amadeus.DTO
         public AdditionalServices AdditionalServices { get; set; }
 
     }
+    
+    public enum TravelClass
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "ECONOMY")]
+        Economy = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = "PREMIUM_ECONOMY")]
+        PremiumEconomy = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = "BUSINESS")]
+        Business = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = "FIRST")]
+        First = 4
+    }
 
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]

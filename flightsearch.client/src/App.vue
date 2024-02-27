@@ -1,44 +1,34 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import FlightSearchPanel from "@/components/FlightSearchPanel.vue";
+import FlightSearch from "@/components/FlightSearch.vue";
 </script>
 
 <template>
-  <header>    
 
-    <div class="wrapper">
-      <FlightSearchPanel/>
-    </div>
-  </header>
-
-<main>>
+<main>
   <div>
-    <HelloWorld msg="You did it!" />  
+    <FlightSearch/>
   </div>
   
   </main>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+html,
+body {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+main{
+  height: 80vh;
+  width: 80vw;
+  
+  background-size: cover;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+#app {
+  height: inherit;
+  width: inherit;
 }
 </style>

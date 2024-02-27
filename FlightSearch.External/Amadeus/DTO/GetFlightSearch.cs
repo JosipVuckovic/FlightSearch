@@ -83,7 +83,7 @@ public class FlightSearchRequest : IEquatable<FlightSearchRequest>
     public int Infants { get; init; }
 
     [AliasAs("travelClass"), JsonPropertyName("travelClass")]
-    public TravelClass? TravelClass { get; init; }
+    public string TravelClass { get; init; }
 
     [AliasAs("includedAirlineCodes"), JsonPropertyName("includedAirlineCodes")]
     public string? IncludedAirlineCodes { get; init; }
@@ -102,19 +102,4 @@ public class FlightSearchRequest : IEquatable<FlightSearchRequest>
 
     [AliasAs("max"), JsonPropertyName("max")]
     public int Max { get; init; }
-}
-
-public enum TravelClass
-{
-    [System.Runtime.Serialization.EnumMember(Value = "ECONOMY")]
-    Economy = 1,
-
-    [System.Runtime.Serialization.EnumMember(Value = "PREMIUM_ECONOMY")]
-    PremiumEconomy = 2,
-
-    [System.Runtime.Serialization.EnumMember(Value = "BUSINESS")]
-    Business = 3,
-
-    [System.Runtime.Serialization.EnumMember(Value = "FIRST")]
-    First = 4
 }

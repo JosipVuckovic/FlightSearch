@@ -42,14 +42,11 @@ public class FlightSearchService : IFlightSearchService
         try
         {
             var flightSearch = await LoadDataFromCacheOrApi(request, cancellationToken);
-            
-            //TODO JV: Map to view model
-
             return flightSearch.ResponseData;
         }
         catch (ApiException refitEx)
         {
-            _logger.LogError(refitEx.Message); //TODO: JV if any time left, use Serilog, better error msg
+            _logger.LogError(refitEx.Message); 
             return Result.Failure<FlightSearchResponse, string>(refitEx.Message);
         }
         catch (Exception ex)

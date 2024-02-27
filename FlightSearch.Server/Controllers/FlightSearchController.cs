@@ -1,7 +1,6 @@
 ﻿using FlightSearch.External.Amadeus.DTO;
 using FlightSearch.Server.Service;
 using Microsoft.AspNetCore.Mvc;
-
 namespace FlightSearch.Server.Controllers;
 
 [ApiController]
@@ -19,10 +18,10 @@ public class FlightSearchController : ControllerBase
         _flightSearchService = flightSearchService;
     }
 
-    [HttpGet(Name = "GetFlightSearch")]
-    public async Task<IActionResult> Get(FlightSearchRequest request, CancellationToken cancellationToken)
+    [HttpPost(Name = "flightsearch")]
+    public async Task<ICollection<FlightOffer>> Get([FromBody]FlightSearchRequest request, CancellationToken cancellationToken)
     {
         var result = await _flightSearchService.GetFlightSearchDataAsync(request, cancellationToken);
-        return result.IsSuccess ? Ok(result.Value) : Ok(result.Error);
+        return result.IsSuccess ? result.Value.Data.ToArray() : ArraySegment<FlightOffer>.Empty;
     }
 }
