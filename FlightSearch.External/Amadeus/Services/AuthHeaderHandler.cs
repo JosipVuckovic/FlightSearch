@@ -27,9 +27,6 @@ public class AuthHeaderHandler : DelegatingHandler
 
         if (string.IsNullOrWhiteSpace(_oAuthResponse?.AccessToken) || DateTimeOffset.Now > _expiresAt)
         {
-            try
-            {
-                //TODO: JV move to string constants
                 _oAuthResponse = await _amadeusApi.GetAccessTokenAsync(new Dictionary<string, string>
                     {
                         {"grant_type", _settings.GrantType},
@@ -39,11 +36,6 @@ public class AuthHeaderHandler : DelegatingHandler
                     cancelToken);
 
                 _expiresAt = DateTimeOffset.Now.AddSeconds(_oAuthResponse.ExpiresIn);
-            }
-            catch (Exception ex)
-            {
-                //TODO: logg ex
-            }
         }
 
         if (authHeader != null)
