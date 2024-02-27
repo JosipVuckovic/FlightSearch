@@ -2,7 +2,6 @@
 using FlightSearch.Server.Service;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace FlightSearch.Server.Controllers;
 
 [ApiController]

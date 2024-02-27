@@ -1,30 +1,27 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import FlightSearchPanel from "@/components/FlightSearchPanel.vue";
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <header>    
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <FlightSearchPanel/>
     </div>
   </header>
 
-  <main>
-    <TheWelcome />
+<main>>
+  <div>
+    <HelloWorld msg="You did it!" />  
+  </div>
+  
   </main>
 </template>
 
 <style scoped>
 header {
   line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
 }
 
 @media (min-width: 1024px) {
