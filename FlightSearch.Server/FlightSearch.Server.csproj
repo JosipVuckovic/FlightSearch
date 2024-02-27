@@ -22,6 +22,7 @@
     <ProjectReference Include="..\flightsearch.client\flightsearch.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\FlighTSearch.Data\FlighTSearch.Data.csproj" />
     <ProjectReference Include="..\FlightSearch.External\FlightSearch.External.csproj" />
   </ItemGroup>
 

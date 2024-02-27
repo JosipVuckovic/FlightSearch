@@ -1,4 +1,6 @@
-﻿using FlightSearch.External.Amadeus.DTO;
+﻿using FlightSearch.Data;
+using FlightSearch.Data.Models.Config;
+using FlightSearch.External.Amadeus.DTO;
 using FlightSearch.External.Amadeus.Services;
 using FlightSearch.Server.Models;
 using FlightSearch.Server.Models.Config;
@@ -19,7 +21,8 @@ public class FlightSearchServiceTest
     private readonly Mock<ILogger<FlightSearchService>> _loggerMock;
     private readonly Mock<IAmadeusApi> _amadeusApiMock;
     private readonly IAppCache _cache;
-    private readonly IOptions<CacheAndDatabaseSettings> _cacheAndDatabaseSettings;
+    private readonly Mock<FlightSearchApplicationDb> _dbMock;
+    private readonly IOptions<CacheAndDatabaseSettings> _settings;
 
     private readonly IFlightSearchService _testedService;
     
@@ -28,8 +31,10 @@ public class FlightSearchServiceTest
         _loggerMock = new Mock<ILogger<FlightSearchService>>();
         _amadeusApiMock = new Mock<IAmadeusApi>();
         _cache = new CachingService();
+        _dbMock = new Mock<FlightSearchApplicationDb>();
+        _settings = Options.Create(new CacheAndDatabaseSettings());
         
-        _testedService = new FlightSearchService(_loggerMock.Object, _amadeusApiMock.Object, _cache);
+        _testedService = new FlightSearchService(_loggerMock.Object, _amadeusApiMock.Object, _cache, _dbMock.Object, _settings);
     }
     
     [Fact]

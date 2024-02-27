@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using System.Reflection;
-using System.Text.Json;
 
 namespace FlightSearch.External;
 
