@@ -20,11 +20,6 @@ public class PreloadDataFromDatabase
     }
     public void PreloadResponsesFromDbToCache()
     {
-        if (_db is null || _settings is null || _cache is null)
-        {
-            return;
-        }
-        
         if (_settings is not {ShouldUseDatabase: true, DatabaseNotOlderThenMinutes: not null})
             return;
         
