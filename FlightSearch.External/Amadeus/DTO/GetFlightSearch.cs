@@ -83,7 +83,7 @@ public class FlightSearchRequest : IEquatable<FlightSearchRequest>
     public int Infants { get; init; }
 
     [AliasAs("travelClass"), JsonPropertyName("travelClass")]
-    public string TravelClass { get; init; }
+    public string? TravelClass { get; init; }
 
     [AliasAs("includedAirlineCodes"), JsonPropertyName("includedAirlineCodes")]
     public string? IncludedAirlineCodes { get; init; }

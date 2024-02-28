@@ -248,24 +248,52 @@
       <table>
         <thead>
         <tr>
-          <th>Flights</th>          
+          <th>Departure Date</th>
+          <th>Departure Airport</th>
+          <th>Dep Carrier</th>
+          <th>Arrival Date</th>
+          <th>Arrival Airport</th>
+          <th>Arr Carrier</th>
+          <th>Planes No.</th>
+          <th>Passenger No.</th>
+          <th>Total price</th>
+          <th>Currency</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="offer in post" :key="offer.id">
-          <td>{{ offer }}</td>
-<!--          <td>{{ offer.price.grandTotal }}</td>-->
-<!--          <td>{{ offer.price.currency }}</td>-->
+        <tr v-for="flight in post" :key="flight.departureDate">
+          <td>{{ flight.departureDate }}</td>
+          <td>{{ flight.departureAirport }}</td>
+          <td>{{ flight.departureCarrier }}</td>
+          <td>{{ flight.arrivalDate }}</td>
+          <td>{{ flight.arrivalAirport }}</td>
+          <td>{{ flight.arrivalCarrier }}</td>
+          <td>{{ flight.numberOfPlaneChanges }}</td>
+          <td>{{ flight.numberOfPassengers }}</td>
+          <td>{{ flight.totalPrice }}</td>
+          <td>{{ flight.currency }}</td>
         </tr>
         </tbody>
       </table>
-    </div>  
+    </div>
   </main>
 </template>
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import {FlightOffer, Segment, type TravelClass} from "@/apis/flightSearchApi";
+
+type FlightSearchViewModels = {
+  departureAirport: string;
+  departureDate: string;
+  departureCarrier: string;
+  arrivalAirport: string;
+  arrivalDate: string;
+  arrivalCarrier: string;
+  numberOfPlaneChanges: string;
+  numberOfPassengers: string;
+  totalPrice: string;
+  currency: string;
+}[];
 
 interface Data {
   originLocationCode: string,
@@ -281,7 +309,7 @@ interface Data {
   maxPrice: number,
   max: number,
   loading: boolean,
-  post: null | FlightOffer[]
+  post: null | FlightSearchViewModels
 }
 
 export default defineComponent({  
@@ -331,7 +359,7 @@ export default defineComponent({
       })
           .then(r => r.json())
           .then(json => {
-            this.post = json as FlightOffer[];
+            this.post = json as FlightSearchViewModels;
             this.loading = false;
             return;
           });

@@ -5,6 +5,7 @@ using FlightSearch.Data.Models.Config;
 using FlightSearch.External.Amadeus.DTO;
 using FlightSearch.External.Amadeus.Services;
 using FlightSearch.Server.Models;
+using FlightSearch.Server.Models.Helpers;
 using LazyCache;
 using Microsoft.Extensions.Options;
 using Refit;
@@ -13,7 +14,7 @@ namespace FlightSearch.Server.Service;
 
 public interface IFlightSearchService
 {
-    public Task<Result<FlightSearchResponse, string>> GetFlightSearchDataAsync(FlightSearchRequest request, CancellationToken cancellationToken);
+    public Task<Result<ICollection<FlightSearchViewModel>, string>> GetFlightSearchDataAsync(FlightSearchRequest request, CancellationToken cancellationToken);
 }
 
 public class FlightSearchService : IFlightSearchService
@@ -24,11 +25,11 @@ public class FlightSearchService : IFlightSearchService
     private readonly FlightSearchApplicationDb _db;
     private readonly CacheAndDatabaseSettings _settings;
 
-    public FlightSearchService(ILogger<FlightSearchService> logger, 
-                               IAmadeusApi amadeusApi, 
-                               IAppCache cache,
-                               FlightSearchApplicationDb db,
-                               IOptions<CacheAndDatabaseSettings> settings)
+    public FlightSearchService(ILogger<FlightSearchService> logger,
+        IAmadeusApi amadeusApi,
+        IAppCache cache,
+        FlightSearchApplicationDb db,
+        IOptions<CacheAndDatabaseSettings> settings)
     {
         _logger = logger;
         _amadeusApi = amadeusApi;
@@ -37,32 +38,42 @@ public class FlightSearchService : IFlightSearchService
         _settings = settings.Value;
     }
 
-    public async Task<Result<FlightSearchResponse, string>> GetFlightSearchDataAsync(FlightSearchRequest request, CancellationToken cancellationToken)
+    public async Task<Result<ICollection<FlightSearchViewModel>, string>> GetFlightSearchDataAsync(FlightSearchRequest request,
+        CancellationToken cancellationToken)
     {
         try
         {
             var flightSearch = await LoadDataFromCacheOrApi(request, cancellationToken);
-            return flightSearch.ResponseData;
+
+            //first we directly process one ways
+            var oneWay = flightSearch.ResponseData.Data.Where(_ => _.Itineraries.Count == 1 || _.OneWay is true)
+                .Select(_ => _.MapToViewModel()).ToList();
+            var roundTrips = flightSearch.ResponseData.Data.Where(_ => _.Itineraries.Count > 1)
+                .Select(_ => _.FlattenFlightOfferWithMultipleItineraries())
+                .ToList().SelectMany(s => s).ToList();
+
+            var combined = oneWay.Concat(roundTrips).ToArray();
+            return combined;
         }
         catch (ApiException refitEx)
         {
-            _logger.LogError(refitEx.Message); 
-            return Result.Failure<FlightSearchResponse, string>(refitEx.Message);
+            _logger.LogError(refitEx.Message);
+            return Result.Failure<ICollection<FlightSearchViewModel>, string>(refitEx.Message);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex.Message);
-            return Result.Failure<FlightSearchResponse, string>(ex.Message);
+            return Result.Failure<ICollection<FlightSearchViewModel>, string>(ex.Message);
         }
     }
 
     private async Task<FlightSearchCacheModel> LoadDataFromCacheOrApi(FlightSearchRequest request, CancellationToken cancellationToken)
     {
-        return await _cache.GetOrAddAsync(request.GetHashCode().ToString(), 
+        return await _cache.GetOrAddAsync(request.GetHashCode().ToString(),
             async () => await GetDataFromApiAsync(request, cancellationToken),
             DateTimeOffset.Now.AddMinutes(_settings.CacheExpirationInMinutes));
     }
-    
+
     private async Task<FlightSearchCacheModel> GetDataFromApiAsync(FlightSearchRequest request, CancellationToken cancellationToken)
     {
         var flightSearchResponse = await _amadeusApi.GetFlightOffersAsync(request, cancellationToken);
@@ -70,7 +81,7 @@ public class FlightSearchService : IFlightSearchService
         var timeStamp = DateTimeOffset.Now;
         if (_settings.ShouldUseDatabase is false)
             return new FlightSearchCacheModel(request.GetHashCode(), flightSearchResponse, timeStamp);
-        
+
         await _db.FlightSearches.AddAsync(new FlightSearchCachedResponseEntity
         {
             RequestHash = request.GetHashCode(),
@@ -81,5 +92,4 @@ public class FlightSearchService : IFlightSearchService
 
         return new FlightSearchCacheModel(request.GetHashCode(), flightSearchResponse, timeStamp);
     }
-    
 }
