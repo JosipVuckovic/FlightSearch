@@ -1,23 +1,23 @@
 <template xmlns="http://www.w3.org/1999/html">
-  <header>     
-    
-      <meta charset="UTF-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Flight Search</title>
-      <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
-          crossorigin="anonymous"
-      />
-      <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
-      />
-      <link rel="stylesheet" href="./style.css" />
-    
-    
+  <header>
+
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Flight Search</title>
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+        crossorigin="anonymous"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="./style.css"/>
+
+
     <div class="container-sm">
       <div class="my-2 card">
         <div class="card-body">
@@ -34,12 +34,12 @@
                   </span>
                   <input
                       type="text"
-                      class="form-control"                      
+                      class="form-control"
                       id="origin-input"
                       placeholder="Location"
                       aria-describedby="origin-label"
                       required
-                      v-model = "originLocationCode"
+                      v-model="originLocationCode"
                   />
                   <datalist id="origin-options"></datalist>
                 </div>
@@ -59,12 +59,12 @@
                   </span>
                   <input
                       type="text"
-                      class="form-control"                      
+                      class="form-control"
                       id="destination-input"
                       placeholder="Location"
                       aria-describedby="destination-label"
                       required
-                      v-model = "destinationLocationCode"
+                      v-model="destinationLocationCode"
                   />
                   <datalist id="destination-options"></datalist>
                 </div>
@@ -77,12 +77,12 @@
         <div class="mb-2 col">
           <div class="h-100 card">
             <div class="card-body">
-              <h5 class="card-title">Dates</h5>            
+              <h5 class="card-title">Dates</h5>
               <div id="departure-date" class="mb-2">
                 <label
                     id="departure-date-label"
                     for="departure-date-input"
-                    class="form-label"                    
+                    class="form-label"
                 >Departure date</label
                 >
                 <div class="input-group">
@@ -95,7 +95,7 @@
                       id="departure-date-input"
                       aria-describedby="departure-date-label"
                       required
-                      v-model = "departureDate"
+                      v-model="departureDate"
                   />
                 </div>
               </div>
@@ -115,7 +115,7 @@
                       class="form-control"
                       id="return-date-input"
                       aria-describedby="return-date-label"
-                      v-model = "returnDate"
+                      v-model="returnDate"
                   />
                 </div>
               </div>
@@ -130,7 +130,7 @@
                       class="form-control"
                       aria-describedby="infants-label"
                       required
-                      v-model = "maxPrice"
+                      v-model="maxPrice"
                   />
                 </div>
               </div>
@@ -144,9 +144,9 @@
                       class="form-control"
                       list="origin-options"
                       id="origin-input"
-                      placeholder="EUR"
+                      placeholder="three letter code"
                       required
-                      v-model = "currencyCode"
+                      v-model="currencyCode"
                   />
                 </div>
               </div>
@@ -168,7 +168,7 @@
                     class="form-select"
                     id="travel-class-select"
                     aria-describedby="travel-class-label"
-                    v-model = "travelClass"
+                    v-model="travelClass"
                 >
                   <option value="ECONOMY">Economy</option>
                   <option value="PREMIUM_ECONOMY">Premium Economy</option>
@@ -189,7 +189,7 @@
                       id="adults-input"
                       aria-describedby="adults-label"
                       required
-                      v-model = "adults"
+                      v-model="adults"
                   />
                 </div>
                 <span id="adults-label" class="form-text"
@@ -207,7 +207,7 @@
                       class="form-control"
                       id="children-input"
                       aria-describedby="children-label"
-                      v-model = "children"
+                      v-model="children"
                   />
                 </div>
                 <span id="children-label" class="form-text"
@@ -225,23 +225,23 @@
                       class="form-control"
                       id="infants-input"
                       aria-describedby="infants-label"
-                      v-model = "infants"
+                      v-model="infants"
                   />
                 </div>
                 <span id="infants-label" class="form-text"
                 >Up to 2 years old</span
                 >
               </div>
-              
+
             </div>
           </div>
         </div>
       </div>
-      <button id="search-button" class="w-100 btn btn-primary"  @click="fetchData">Search</button>
+      <button id="search-button" class="w-100 btn btn-primary" @click="fetchData">Search</button>
     </div>
 
   </header>
-   
+
   <main>
 
     <div v-if="post" class="content">
@@ -281,6 +281,8 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 type FlightSearchViewModels = {
   departureAirport: string;
@@ -303,7 +305,7 @@ interface Data {
   adults: number,
   children: number,
   infants: number,
-  travelClass: string | null,  
+  travelClass: string | null,
   nonStop: boolean,
   currencyCode: string | null,
   maxPrice: number,
@@ -312,26 +314,26 @@ interface Data {
   post: null | FlightSearchViewModels
 }
 
-export default defineComponent({  
+export default defineComponent({
   data(): Data {
     return {
       travelClass: null,
       adults: 0,
       children: 0,
       currencyCode: "",
-      departureDate: "",      
+      departureDate: "",
       destinationLocationCode: "",
       infants: 0,
       max: 0,
       maxPrice: 0,
       nonStop: false,
       originLocationCode: "",
-      returnDate: null,      
+      returnDate: null,
       loading: false,
-      post: null      
+      post: null
     };
   },
-  
+
   methods: {
     fetchData(): void {
       this.post = null;
@@ -339,30 +341,32 @@ export default defineComponent({
 
       fetch('flightsearch', {
         method: 'post',
-        headers:new Headers({
+        headers: new Headers({
           'Content-type': 'application/json; charset=UTF-8'
-        }),        
+        }),
         body: JSON.stringify({
           "originLocationCode": this.originLocationCode,
-          "destinationLocationCode": this.destinationLocationCode,          
+          "destinationLocationCode": this.destinationLocationCode,
           "departureDate": this.departureDate,
           "returnDate": this.returnDate,
-          "travelClass":this.travelClass,
+          "travelClass": this.travelClass,
           "adults": this.adults,
           "children": this.children,
-          "infants": this.infants,                   
+          "infants": this.infants,
           "nonStop": this.nonStop,
           "currencyCode": this.currencyCode,
           "maxPrice": this.maxPrice,
-          "max": 250          
+          "max": 250
         })
       })
           .then(r => r.json())
           .then(json => {
-            this.post = json as FlightSearchViewModels;
+            this.post = json;
             this.loading = false;
             return;
-          });
+          }).catch(e => {          
+          toast.error('Bad request :(');
+        });
     }
   },
 });
@@ -372,6 +376,7 @@ export default defineComponent({
 th {
   font-weight: bold;
 }
+
 tr:nth-child(even) {
   background: #F2F2F2;
 }

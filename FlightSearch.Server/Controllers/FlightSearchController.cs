@@ -20,9 +20,9 @@ public class FlightSearchController : ControllerBase
     }
 
     [HttpPost(Name = "flightsearch")]
-    public async Task<IEnumerable<FlightSearchViewModel>> Get([FromBody]FlightSearchRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Get([FromBody]FlightSearchRequest request, CancellationToken cancellationToken)
     {
         var result = await _flightSearchService.GetFlightSearchDataAsync(request, cancellationToken);
-        return result.IsSuccess ? result.Value : ArraySegment<FlightSearchViewModel>.Empty;
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 }
