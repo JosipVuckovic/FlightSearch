@@ -20,8 +20,8 @@ When using a database, each response is also stored in the DB and at the start o
 
 Responses to requests are always cached for the duration set in the preferences. 
 
-Frontend is rudimentary and shows jsons as data.
+Frontend is rudimentary and only shows required data in a simple table.
 
-It would be better if the API endpoint would also respond with a status code or some sort of result, but I need to know FE a bit better. For the same reason, didn't spend time creating a view model, but reused the API provider models.
+It would be better if the API endpoint would also respond with a status code or some sort of result, but I need to know FE a bit better.
 
 Models for Amadeus API and FE calls are auto-generated with NSwag.
