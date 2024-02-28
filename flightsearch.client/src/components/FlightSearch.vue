@@ -308,7 +308,7 @@ interface Data {
   travelClass: string | null,
   nonStop: boolean,
   currencyCode: string | null,
-  maxPrice: number,
+  maxPrice: number | null,
   max: number,
   loading: boolean,
   post: null | FlightSearchViewModels
@@ -320,7 +320,7 @@ export default defineComponent({
       travelClass: null,
       adults: 0,
       children: 0,
-      currencyCode: "",
+      currencyCode: null,
       departureDate: "",
       destinationLocationCode: "",
       infants: 0,
@@ -338,7 +338,19 @@ export default defineComponent({
     fetchData(): void {
       this.post = null;
       this.loading = true;
-
+      
+      if (this.originLocationCode == null || this.originLocationCode == '' ||
+          this.destinationLocationCode == '' || this.destinationLocationCode == '' || 
+          this.departureDate == '' ||
+          this.currencyCode == '' || this.currencyCode == null ||
+          this.maxPrice == null || this.maxPrice == 0 ||
+          this.adults == null || this.adults == 0
+      )
+      {
+        toast.error('Required fields not filled');
+        return;
+      }
+      
       fetch('flightsearch', {
         method: 'post',
         headers: new Headers({
