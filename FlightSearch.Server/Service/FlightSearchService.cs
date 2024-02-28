@@ -9,6 +9,8 @@ using FlightSearch.Server.Models.Helpers;
 using LazyCache;
 using Microsoft.Extensions.Options;
 using Refit;
+using System.Text;
+using System.Text.Json;
 
 namespace FlightSearch.Server.Service;
 
@@ -57,6 +59,18 @@ public class FlightSearchService : IFlightSearchService
         }
         catch (ApiException refitEx)
         {
+            if (refitEx.Content is not null)
+            {
+                var stringBuilder = new StringBuilder();
+                var errors = JsonSerializer.Deserialize<Errors>(refitEx.Content) ?? null;
+                foreach (var error in errors.ErrorList)
+                {
+                    stringBuilder.AppendLine($"{error.Detail} - Ex: {error.Source.Example}");
+                }
+                return Result.Failure<ICollection<FlightSearchViewModel>, string>(stringBuilder.ToString());
+            }
+            
+            
             _logger.LogError(refitEx.Message);
             return Result.Failure<ICollection<FlightSearchViewModel>, string>(refitEx.Message);
         }

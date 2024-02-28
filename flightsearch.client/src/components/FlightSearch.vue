@@ -40,6 +40,7 @@
                       aria-describedby="origin-label"
                       required
                       v-model="originLocationCode"
+                      :class="{'input--error':!originLocationCode}"
                   />
                   <datalist id="origin-options"></datalist>
                 </div>
@@ -65,6 +66,7 @@
                       aria-describedby="destination-label"
                       required
                       v-model="destinationLocationCode"
+                      :class="{'input--error':!destinationLocationCode}"
                   />
                   <datalist id="destination-options"></datalist>
                 </div>
@@ -96,6 +98,7 @@
                       aria-describedby="departure-date-label"
                       required
                       v-model="departureDate"
+                      :class="{'input--error':!departureDate}"
                   />
                 </div>
               </div>
@@ -122,7 +125,7 @@
               <div class="mb-2">
                 <div class="input-group">
                   <label class="input-group-text"
-                  >MaxPrice</label
+                  >Price</label
                   >
                   <input
                       type="number"
@@ -131,13 +134,14 @@
                       aria-describedby="infants-label"
                       required
                       v-model="maxPrice"
+                      :class="{'input--error':!maxPrice}"
                   />
                 </div>
               </div>
               <div class="mb-2">
                 <div class="input-group">
                   <label class="input-group-text"
-                  >CurrencyCode</label
+                  >Currency Code</label
                   >
                   <input
                       type="text"
@@ -147,6 +151,7 @@
                       placeholder="three letter code"
                       required
                       v-model="currencyCode"
+                      :class="{'input--error':!currencyCode}"
                   />
                 </div>
               </div>
@@ -190,6 +195,7 @@
                       aria-describedby="adults-label"
                       required
                       v-model="adults"
+                      :class="{'input--error':!adults}"
                   />
                 </div>
                 <span id="adults-label" class="form-text"
@@ -338,11 +344,11 @@ export default defineComponent({
     fetchData(): void {
       this.post = null;
       this.loading = true;
-      
+
       if (this.originLocationCode == null || this.originLocationCode == '' ||
-          this.destinationLocationCode == '' || this.destinationLocationCode == '' || 
-          this.departureDate == '' ||
-          this.currencyCode == '' || this.currencyCode == null ||
+          this.destinationLocationCode == null   || this.destinationLocationCode == '' ||
+          this.departureDate == null || this.departureDate == '' ||
+          this.currencyCode == null || this.currencyCode == '' ||
           this.maxPrice == null || this.maxPrice == 0 ||
           this.adults == null || this.adults == 0
       )
@@ -370,8 +376,7 @@ export default defineComponent({
           "maxPrice": this.maxPrice,
           "max": 250
         })
-      })
-          .then(r => r.json())
+      }).then(r => r.json())
           .then(json => {
             this.post = json;
             this.loading = false;
@@ -385,6 +390,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 th {
   font-weight: bold;
 }
@@ -410,5 +416,9 @@ th, td {
 table {
   margin-left: auto;
   margin-right: auto;
+}
+
+.input--error{
+  border-color:red;
 }
 </style>
